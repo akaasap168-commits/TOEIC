@@ -95,7 +95,7 @@ def main(path):
         "done": [],
     }
     OUT.parent.mkdir(exist_ok=True)
-    OUT.write_text(serialize(data), encoding="utf-8")
+    OUT.write_text(serialize(data), encoding="utf-8", newline="\n")
     for s in data["sessions"]:
         print(s["id"], sum(i["done"] for i in s["items"]), "/", len(s["items"]))
     print("active:", data["activeSession"], "->", OUT)
