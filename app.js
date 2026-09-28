@@ -58,7 +58,7 @@ function serialize(d) {
     ? '{' + Object.entries(o).map(([k, v]) => JSON.stringify(k) + ': ' + JSON.stringify(v)).join(', ') + '}'
     : JSON.stringify(o);
   const lines = (arr, ind) => arr.map(o => ind + one(o)).join(',\n');
-  const sess = d.sessions.map(s => `  {"id": ${one(s.id)}, "items": [\n${lines(s.items, '    ')}\n  ]}`).join(',\n');
+  const sess = d.sessions.map(s => `  {"id": ${one(s.id)}, ${s.title ? `"title": ${one(s.title)}, ` : ''}"items": [\n${lines(s.items, '    ')}\n  ]}`).join(',\n');
   return '{\n' +
     `"settings": {"mode": ${one(d.settings.mode)}, "parts": [\n${lines(d.settings.parts, '  ')}\n]},\n` +
     `"activeSession": ${one(d.activeSession || '')},\n` +
@@ -342,7 +342,7 @@ function renderMain() {
   const done = s.items.filter(i => i.done).length, total = s.items.length;
   $('#currentQ').textContent = idx < 0 ? '★ セッション完了！おつかれさまでした ★' : `${s.items[idx].part} － 第${s.items[idx].q}問`;
   $('#currentQ').classList.toggle('complete', idx < 0);
-  $('#sessionInfo').textContent = `セッション ${s.id}`;
+  $('#sessionInfo').textContent = `セッション ${sessionLabel(s)}`;
   $('#progressText').textContent = `${done} / ${total} 問 完了`;
   $('#progressBar').style.width = (total ? done / total * 100 : 0) + '%';
   btn.disabled = idx < 0;
@@ -366,8 +366,33 @@ function renderDone() {
   $('#btnClearDone').disabled = !data.done.length;
 }
 
+function sessionLabel(s) { return s.title ? `${s.title}（${s.id}）` : s.id; }
+
+function renameSession(id) {
+  const s = data.sessions.find(x => x.id === id); if (!s) return;
+  const title = prompt('セッションの名前（空欄で名前なし）', s.title || '');
+  if (title === null) return;
+  const t = title.trim();
+  mutate(d => {
+    const ss = d.sessions.find(x => x.id === id); if (!ss) return;
+    if (t) ss.title = t; else delete ss.title;
+  }, `session: ${id} の名前を「${t || 'なし'}」に変更`);
+}
+
+function deleteSession(id) {
+  const s = data.sessions.find(x => x.id === id); if (!s) return;
+  const done = s.items.filter(i => i.done).length;
+  if (!confirm(`セッション「${sessionLabel(s)}」を削除します。\n（${done} / ${s.items.length} 問の記録も消えます）\n\nこの操作は元に戻せません。よろしいですか？`)) return;
+  mutate(d => {
+    d.sessions = d.sessions.filter(x => x.id !== id);
+    if (d.activeSession === id) d.activeSession = '';
+  }, `session: ${id} を削除`);
+  toast('セッションを削除しました');
+}
+
 function renderLog() {
   const sessions = [...data.sessions].reverse();
+  const open = new Set([...document.querySelectorAll('#logList details[open]')].map(e => e.dataset.id));
   $('#logList').innerHTML = sessions.map(s => {
     const done = s.items.filter(i => i.done).length, total = s.items.length;
     const ext = s.items.filter(i => i.external).length;
@@ -375,10 +400,14 @@ function renderLog() {
     const range = dates.length ? (dates[0] === dates[dates.length - 1] ? dates[0] : `${dates[0]} 〜 ${dates[dates.length - 1]}`) : '未着手';
     const active = s.id === data.activeSession;
     const rows = s.items.map(i => `<tr class="${i.done ? '' : 'todo'}"><td>${i.seq}</td><td>${esc(i.part)}</td><td>第${i.q}問</td><td>${i.done ? (i.external ? 'やった（アプリ外）' : 'やった') : '—'}</td><td>${i.date || ''}</td></tr>`).join('');
-    return `<details class="card">
-      <summary><b>${esc(s.id)}</b> ${active ? '<span class="badge">進行中</span>' : ''} ${done >= total ? '<span class="badge done">完了</span>' : ''}
-        <span class="muted">${done} / ${total} 問${ext ? `（うちアプリ外 ${ext}）` : ''} ・ ${range}</span></summary>
-      ${!active && done < total ? `<button class="resume" data-id="${esc(s.id)}">このセッションを再開</button>` : ''}
+    return `<details class="card" data-id="${esc(s.id)}"${open.has(s.id) ? ' open' : ''}>
+      <summary><b>${esc(s.title || s.id)}</b> ${active ? '<span class="badge">進行中</span>' : ''} ${done >= total ? '<span class="badge done">完了</span>' : ''}
+        <span class="muted">${s.title ? esc(s.id) + ' ・ ' : ''}${done} / ${total} 問${ext ? `（うちアプリ外 ${ext}）` : ''} ・ ${range}</span></summary>
+      <div class="row">
+        ${!active && done < total ? `<button class="resume" data-id="${esc(s.id)}">このセッションを再開</button>` : ''}
+        <button class="rename" data-id="${esc(s.id)}">名前を付ける</button>
+        <button class="delete danger" data-id="${esc(s.id)}">削除</button>
+      </div>
       <table class="items"><thead><tr><th>#</th><th>パート</th><th>問題</th><th>状態</th><th>日付</th></tr></thead><tbody>${rows}</tbody></table>
     </details>`;
   }).join('') || '<p class="muted">まだ記録がありません。</p>';
@@ -399,10 +428,10 @@ function partRow(p) {
 
 function renderResumeList() {
   const box = $('#resumeList');
-  const list = data.sessions.map(s => ({ id: s.id, remain: s.items.filter(i => !i.done).length })).filter(x => x.remain > 0);
+  const list = data.sessions.map(s => ({ id: s.id, label: sessionLabel(s), remain: s.items.filter(i => !i.done).length })).filter(x => x.remain > 0);
   if (!list.length) { box.classList.add('hidden'); toast('再開できる未完了セッションはありません'); return; }
   box.innerHTML = '<h2>再開するセッション</h2>' + list.reverse().map(x =>
-    `<button class="resume" data-id="${esc(x.id)}">${esc(x.id)}（残り ${x.remain} 問）${x.id === data.activeSession ? ' ← 現在' : ''}</button>`).join('');
+    `<button class="resume" data-id="${esc(x.id)}">${esc(x.label)}（残り ${x.remain} 問）${x.id === data.activeSession ? ' ← 現在' : ''}</button>`).join('');
   box.classList.remove('hidden');
 }
 
@@ -424,7 +453,12 @@ $('#partsTable').addEventListener('click', e => { if (e.target.classList.contain
 $('#doneGrid').addEventListener('click', e => {
   const b = e.target.closest('.qcell[data-part]'); if (b) toggleExternal(b.dataset.part, Number(b.dataset.q));
 });
-document.addEventListener('click', e => { const b = e.target.closest('button.resume'); if (b) resumeSession(b.dataset.id); });
+document.addEventListener('click', e => {
+  const b = e.target.closest('button.resume, button.rename, button.delete'); if (!b) return;
+  if (b.classList.contains('resume')) resumeSession(b.dataset.id);
+  else if (b.classList.contains('rename')) renameSession(b.dataset.id);
+  else deleteSession(b.dataset.id);
+});
 $('#btnSaveGh').addEventListener('click', () => {
   const repo = $('#repoInput').value.trim().replace(/^https:\/\/github\.com\//, '').replace(/\.git$/, '').replace(/\/$/, '');
   const tok = $('#tokenInput').value.trim();
