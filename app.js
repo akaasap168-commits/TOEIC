@@ -85,6 +85,8 @@ async function putRemote(message) {
     body: JSON.stringify({ message, content: b64encode(serialize(data)), sha, branch: cfg.branch }),
   });
   if (res.status === 409 || res.status === 422) return 'conflict';
+  if (res.status === 401) throw new Error('トークンが無効か期限切れです。設定タブで入れ直してください');
+  if (res.status === 403 || res.status === 404) throw new Error('トークンに書き込み権限がありません（Contents を Read and write に）');
   if (!res.ok) throw new Error(`GitHub への保存に失敗 (${res.status})`);
   sha = (await res.json()).content.sha;
   return 'ok';
@@ -154,9 +156,46 @@ async function pushWithRetry(fn, message) {
     updateStatus();
   } catch (e) {
     setStatus('未同期の変更あり', 'warn');
-    toast(e.message + '（「今すぐ同期」で再送できます）');
+    // 自動再送で同じエラーを何度も出さない
+    if (e.message !== pushWithRetry.lastError) toast(e.message + '（自動で再送します）');
+    pushWithRetry.lastError = e.message;
+    return;
+  }
+  pushWithRetry.lastError = null;
+}
+
+// ---------------------------------------------------------------- 自動同期
+// 未同期の変更は定期的・オンライン復帰時に自動で再送し、
+// タブに戻ったときは別の PC で付けた記録を自動で読み込む。
+async function autoSync() {
+  if (!data || !cfg.repo || autoSync.busy) return;
+  autoSync.busy = true;
+  try {
+    if (lsGet(LS.pending)) {
+      if (!cfg.token) return;
+      sha = (await fetchRemote()).sha;
+      saveQueue = saveQueue.then(() => pushWithRetry(null, 'sync: 未同期の変更を反映'));
+      await saveQueue;
+    } else {
+      const r = await fetchRemote();
+      if (r.sha !== sha) {
+        data = r.data; sha = r.sha;
+        normalize(); applyExternalDone(); render();
+        lsSet(LS.cache, JSON.stringify(data));
+        toast('別の端末の記録を読み込みました');
+      }
+      updateStatus();
+    }
+  } catch (e) {
+    // オフラインなどは次回に再試行
+  } finally {
+    autoSync.busy = false;
   }
 }
+setInterval(() => { if (lsGet(LS.pending)) autoSync(); }, 60 * 1000);
+window.addEventListener('online', autoSync);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') autoSync(); });
+
 async function syncNow() {
   if (!lsGet(LS.pending)) { await load(); toast('最新の記録を読み込みました'); return; }
   if (!cfg.token) { toast('トークンを設定してください'); return; }
