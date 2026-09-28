@@ -114,6 +114,10 @@ async function load() {
   applyExternalDone();
   render();
   updateStatus();
+  // トークン設定前などに溜まった未同期の変更があれば自動で送る
+  if (pending && cfg.repo && cfg.token && sha) {
+    saveQueue = saveQueue.then(() => pushWithRetry(null, 'sync: 未同期の変更を反映'));
+  }
 }
 
 function updateStatus() {
@@ -138,8 +142,9 @@ async function pushWithRetry(fn, message) {
     let r = await putRemote(message);
     if (r === 'conflict') {
       const remote = await fetchRemote();
-      data = remote.data; sha = remote.sha;
-      normalize(); fn && fn(data); applyExternalDone();
+      sha = remote.sha;
+      // 通常の操作は GitHub の最新に同じ変更をやり直す。未同期分の一括送信（fn なし）は手元の内容で上書き
+      if (fn) { data = remote.data; normalize(); fn(data); applyExternalDone(); }
       r = await putRemote(message);
       if (r === 'conflict') throw new Error('他の端末と競合しました。再読み込みしてください');
       render();
