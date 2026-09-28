@@ -3,6 +3,7 @@
 // データは GitHub リポジトリの data/records.json に保存する。
 
 const DATA_PATH = 'data/records.json';
+const DEFAULT_REPO = 'akaasap168-commits/TOEIC';
 const LS = { cfg: 'toeic.cfg', pending: 'toeic.pending', cache: 'toeic.cache' };
 
 let data = null;      // records.json の中身
@@ -19,6 +20,7 @@ function loadCfg() {
     const repo = location.pathname.split('/')[1];
     if (repo) c.repo = location.hostname.split('.')[0] + '/' + repo;
   }
+  c.repo = c.repo || DEFAULT_REPO;
   c.branch = c.branch || 'main';
   return c;
 }

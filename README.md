@@ -29,13 +29,13 @@ TOEIC の各パートの問題をランダムな順で出題し、「やった�
 ## 使い方
 
 ### 公開 URL で使う
-GitHub Pages の URL（`https://<ユーザー名>.github.io/TOEIC/`）を開くだけです。
+GitHub Pages の URL（`https://akaasap168-commits.github.io/TOEIC/`）を開くだけです。
 
 ### 別の PC で使う
 ```
-git clone https://github.com/<ユーザー名>/TOEIC.git
+git clone https://github.com/akaasap168-commits/TOEIC.git
 ```
-`index.html` をブラウザで開き、「設定」タブでリポジトリ（`<ユーザー名>/TOEIC`）とトークンを入力します。
+`index.html` をブラウザで開き、「設定」タブでトークンを入力します（リポジトリは `akaasap168-commits/TOEIC` が初期設定済み）。
 （記録は GitHub から直接読み書きするので、以後の `git pull` は必須ではありません）
 
 ### 記録を書き込むためのトークン（最初に1回、PC/ブラウザごと）
