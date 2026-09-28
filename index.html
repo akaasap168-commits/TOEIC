@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TOEIC ランダム出題</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>TOEIC ランダム出題</h1>
+  <span id="syncStatus" class="status"></span>
+</header>
+
+<nav id="tabs">
+  <button data-tab="main" class="active">進行</button>
+  <button data-tab="done">やった登録</button>
+  <button data-tab="log">記録</button>
+  <button data-tab="settings">設定</button>
+</nav>
+
+<main>
+  <!-- 進行 -->
+  <section id="tab-main" class="tab active">
+    <div class="card current">
+      <div class="label">次の問題：</div>
+      <div id="currentQ" class="question">読み込み中…</div>
+      <div id="sessionInfo" class="muted"></div>
+      <div class="progress"><div id="progressBar"></div></div>
+      <div id="progressText" class="progress-text"></div>
+      <button id="btnDone" class="primary big">✓ やった → 次へ</button>
+      <button id="btnUndo" class="link">直前の「やった」を取り消す</button>
+    </div>
+    <div class="row">
+      <button id="btnNew">新規セッション開始</button>
+      <button id="btnResume">セッション再開</button>
+    </div>
+    <div id="resumeList" class="card hidden"></div>
+  </section>
+
+  <!-- やった登録 -->
+  <section id="tab-done" class="tab">
+    <div class="card">
+      <p>アプリを使わずに解いた問題をクリックして「やった」に登録します（もう一度クリックで解除）。<br>
+      登録した問題は<b>新規セッションの出題対象から外れ</b>、進行中のセッションでも自動的に飛ばされます。</p>
+      <label>メモ（任意）<input id="doneNote" placeholder="例：紙で解いた"></label>
+      <div id="doneGrid"></div>
+      <div class="row">
+        <button id="btnClearDone" class="danger">登録をすべてクリア（別の冊子に移るとき）</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 記録 -->
+  <section id="tab-log" class="tab">
+    <div id="logList"></div>
+  </section>
+
+  <!-- 設定 -->
+  <section id="tab-settings" class="tab">
+    <div class="card">
+      <h2>出題設定</h2>
+      <p class="muted">パート名・問題数は自由に変更可（行の追加・削除もOK）。別の冊子に移るときは問題数を書き換えて「新規セッション開始」。</p>
+      <table id="partsTable"><thead><tr><th>パート</th><th>問題数</th><th></th></tr></thead><tbody></tbody></table>
+      <button id="btnAddPart">＋ 行を追加</button>
+      <label>出題モード
+        <select id="modeSelect">
+          <option>全体シャッフル</option>
+          <option>パート順シャッフル</option>
+        </select>
+      </label>
+      <p class="muted">全体シャッフル：同じパートが3問以上続かないように混ぜる／パート順シャッフル：パート1から順に、パート内だけ混ぜる</p>
+      <button id="btnSaveSettings" class="primary">設定を保存</button>
+    </div>
+
+    <div class="card">
+      <h2>GitHub 同期</h2>
+      <p class="muted">記録は GitHub リポジトリの <code>data/records.json</code> に保存されます。書き込みには自分の Personal Access Token が必要です（このブラウザにだけ保存され、リポジトリには含まれません）。</p>
+      <label>リポジトリ（owner/repo）<input id="repoInput" placeholder="yourname/TOEIC"></label>
+      <label>ブランチ<input id="branchInput" placeholder="main"></label>
+      <label>トークン<input id="tokenInput" type="password" placeholder="github_pat_..." autocomplete="off"></label>
+      <div class="row">
+        <button id="btnSaveGh" class="primary">保存して再読み込み</button>
+        <button id="btnSync">今すぐ同期</button>
+        <button id="btnDownload">records.json をダウンロード</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
