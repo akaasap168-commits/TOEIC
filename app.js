@@ -299,6 +299,22 @@ function markDone() {
   }, `record: ${it.part} 第${it.q}問 やった`);
 }
 
+// 今の問題をセッションの最後に回す（Excel 版の「スキップ（後回し）」と同じ）
+function doLater() {
+  const s = activeSession(); const idx = currentIndex(s);
+  if (idx < 0) return;
+  if (s.items.slice(idx + 1).every(i => i.done)) { toast('残りはこの問題だけです'); return; }
+  const it = s.items[idx], sid = s.id, seq = it.seq;
+  mutate(d => {
+    const ss = d.sessions.find(x => x.id === sid); if (!ss) return;
+    const i = ss.items.findIndex(x => x.seq === seq && !x.done); if (i < 0) return;
+    const [moved] = ss.items.splice(i, 1);
+    moved.seq = Math.max(...ss.items.map(x => x.seq), moved.seq) + 1;
+    ss.items.push(moved);
+  }, `later: ${it.part} 第${it.q}問 を後回し`);
+  toast(`${it.part} 第${it.q}問 を最後に回しました`);
+}
+
 function undoLast() {
   const s = activeSession(); if (!s) return;
   const end = currentIndex(s) < 0 ? s.items.length : currentIndex(s);
@@ -375,7 +391,7 @@ function renderMain() {
   if (!s) {
     $('#currentQ').textContent = '「新規セッション開始」を押してください';
     $('#sessionInfo').textContent = ''; $('#progressText').textContent = '';
-    $('#progressBar').style.width = '0'; btn.disabled = true; return;
+    $('#progressBar').style.width = '0'; btn.disabled = true; $('#btnLater').disabled = true; return;
   }
   const idx = currentIndex(s);
   const done = s.items.filter(i => i.done).length, total = s.items.length;
@@ -385,6 +401,7 @@ function renderMain() {
   $('#progressText').textContent = `${done} / ${total} 問 完了`;
   $('#progressBar').style.width = (total ? done / total * 100 : 0) + '%';
   btn.disabled = idx < 0;
+  $('#btnLater').disabled = idx < 0;
 }
 
 function renderDone() {
@@ -483,6 +500,7 @@ function showTab(name) {
 document.querySelectorAll('#tabs button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
 $('#btnDone').addEventListener('click', markDone);
 $('#btnUndo').addEventListener('click', undoLast);
+$('#btnLater').addEventListener('click', doLater);
 $('#btnNew').addEventListener('click', newSession);
 $('#btnResume').addEventListener('click', renderResumeList);
 $('#btnClearDone').addEventListener('click', clearDone);

@@ -67,6 +67,7 @@ button:disabled { opacity: .45; cursor: default; }
 button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 button.danger { color: var(--err); }
 button.link { border: 0; background: none; color: var(--muted); font-size: 12px; text-decoration: underline; padding: 4px; }
+.sub-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 4px; }
 button.big { width: 100%; font-size: 18px; padding: 14px; margin-top: 12px; }
 
 .current { text-align: center; }

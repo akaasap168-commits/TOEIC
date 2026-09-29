@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TOEIC ランダム出題</title>
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 <header>
@@ -33,7 +33,10 @@
       <div class="progress"><div id="progressBar"></div></div>
       <div id="progressText" class="progress-text"></div>
       <button id="btnDone" class="primary big">✓ やった → 次へ</button>
-      <button id="btnUndo" class="link">直前の「やった」を取り消す</button>
+      <div class="sub-actions">
+        <button id="btnUndo" class="link">直前の「やった」を取り消す</button>
+        <button id="btnLater" class="link">後でやる</button>
+      </div>
     </div>
     <div class="row">
       <button id="btnNew">新規セッション開始</button>
@@ -93,6 +96,6 @@
 </main>
 
 <div id="toast"></div>
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>
