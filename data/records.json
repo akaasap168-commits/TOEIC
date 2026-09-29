@@ -171,7 +171,7 @@
     {"seq": 30, "part": "パート2", "q": 3, "done": true, "date": "2026-09-29"},
     {"seq": 31, "part": "パート4", "q": 7, "done": true, "date": "2026-09-29"},
     {"seq": 32, "part": "パート7", "q": 12, "done": true, "date": "2026-09-29"},
-    {"seq": 33, "part": "パート3", "q": 10, "done": false},
+    {"seq": 33, "part": "パート3", "q": 10, "done": true, "date": "2026-09-29"},
     {"seq": 34, "part": "パート5", "q": 1, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 35, "part": "パート3", "q": 11, "done": false},
     {"seq": 36, "part": "パート4", "q": 8, "done": false},
