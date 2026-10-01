@@ -180,7 +180,6 @@
     {"seq": 38, "part": "パート7", "q": 13, "done": true, "date": "2026-10-01"},
     {"seq": 39, "part": "パート6", "q": 2, "done": true, "external": true, "date": "2026-10-01"},
     {"seq": 40, "part": "パート3", "q": 12, "done": true, "date": "2026-10-01"},
-    {"seq": 41, "part": "パート6", "q": 3, "done": false},
     {"seq": 42, "part": "パート1", "q": 1, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 43, "part": "パート7", "q": 14, "done": false},
     {"seq": 44, "part": "パート4", "q": 9, "done": false},
@@ -192,7 +191,8 @@
     {"seq": 50, "part": "パート6", "q": 4, "done": false},
     {"seq": 51, "part": "パート7", "q": 15, "done": false},
     {"seq": 52, "part": "パート4", "q": 10, "done": false},
-    {"seq": 53, "part": "パート2", "q": 6, "done": false}
+    {"seq": 53, "part": "パート2", "q": 6, "done": false},
+    {"seq": 54, "part": "パート6", "q": 3, "done": false}
   ]}
 ]
 }
