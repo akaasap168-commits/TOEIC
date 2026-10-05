@@ -180,7 +180,7 @@
   {"id": "20261005-101453", "title": "Vol.4", "items": [
     {"seq": 1, "part": "パート7", "q": 1, "done": true, "date": "2026-10-05"},
     {"seq": 2, "part": "パート7", "q": 2, "done": true, "date": "2026-10-05"},
-    {"seq": 3, "part": "パート3", "q": 1, "done": false},
+    {"seq": 3, "part": "パート3", "q": 1, "done": true, "date": "2026-10-05"},
     {"seq": 4, "part": "パート7", "q": 3, "done": false},
     {"seq": 5, "part": "パート3", "q": 2, "done": false},
     {"seq": 6, "part": "パート7", "q": 4, "done": false},
