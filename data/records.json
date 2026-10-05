@@ -10,7 +10,8 @@
 ]},
 "activeSession": "20260808-103013",
 "done": [
-  {"part": "パート1", "q": 1, "date": "2026-10-05"}
+  {"part": "パート1", "q": 1, "date": "2026-10-05"},
+  {"part": "パート1", "q": 2, "date": "2026-10-05"}
 ],
 "sessions": [
   {"id": "20260709-105249", "title": "Vol.1", "items": [
@@ -118,7 +119,7 @@
     {"seq": 46, "part": "パート4", "q": 9, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 47, "part": "パート3", "q": 13, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 48, "part": "パート5", "q": 3, "done": true, "external": true, "date": "2026-09-29"},
-    {"seq": 49, "part": "パート1", "q": 2, "done": false},
+    {"seq": 49, "part": "パート1", "q": 2, "done": true, "external": true, "date": "2026-10-05"},
     {"seq": 50, "part": "パート4", "q": 10, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 51, "part": "パート2", "q": 6, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 52, "part": "パート6", "q": 4, "done": false},
@@ -171,7 +172,7 @@
     {"seq": 45, "part": "パート2", "q": 5, "done": true, "date": "2026-10-03"},
     {"seq": 46, "part": "パート5", "q": 2, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 47, "part": "パート3", "q": 13, "done": true, "date": "2026-10-05"},
-    {"seq": 48, "part": "パート1", "q": 2, "done": false},
+    {"seq": 48, "part": "パート1", "q": 2, "done": true, "external": true, "date": "2026-10-05"},
     {"seq": 49, "part": "パート5", "q": 3, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 50, "part": "パート6", "q": 4, "done": true, "date": "2026-10-05"},
     {"seq": 51, "part": "パート7", "q": 15, "done": true, "date": "2026-10-05"},
