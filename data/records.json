@@ -25,7 +25,6 @@
   {"part": "パート7", "q": 4, "date": "2026-09-29"},
   {"part": "パート6", "q": 2, "date": "2026-10-01"},
   {"part": "パート6", "q": 3, "date": "2026-10-02"},
-  {"part": "パート1", "q": 1, "date": "2026-10-05"},
   {"part": "パート1", "q": 2, "date": "2026-10-05"}
 ],
 "sessions": [
@@ -129,7 +128,7 @@
     {"seq": 41, "part": "パート6", "q": 3, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 42, "part": "パート5", "q": 2, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 43, "part": "パート2", "q": 5, "done": true, "external": true, "date": "2026-09-29"},
-    {"seq": 44, "part": "パート1", "q": 1, "done": true, "external": true, "date": "2026-10-05"},
+    {"seq": 44, "part": "パート1", "q": 1, "done": false},
     {"seq": 45, "part": "パート7", "q": 14, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 46, "part": "パート4", "q": 9, "done": true, "external": true, "date": "2026-09-29"},
     {"seq": 47, "part": "パート3", "q": 13, "done": true, "external": true, "date": "2026-09-29"},
@@ -181,7 +180,7 @@
     {"seq": 38, "part": "パート7", "q": 13, "done": true, "date": "2026-10-01"},
     {"seq": 39, "part": "パート6", "q": 2, "done": true, "external": true, "date": "2026-10-01"},
     {"seq": 40, "part": "パート3", "q": 12, "done": true, "date": "2026-10-01"},
-    {"seq": 42, "part": "パート1", "q": 1, "done": true, "external": true, "date": "2026-10-05"},
+    {"seq": 42, "part": "パート1", "q": 1, "done": false},
     {"seq": 43, "part": "パート7", "q": 14, "done": true, "date": "2026-10-01"},
     {"seq": 44, "part": "パート4", "q": 9, "done": true, "date": "2026-10-01"},
     {"seq": 45, "part": "パート2", "q": 5, "done": true, "date": "2026-10-03"},
