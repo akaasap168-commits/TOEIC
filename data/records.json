@@ -9,7 +9,9 @@
   {"name": "パート7", "count": 15}
 ]},
 "activeSession": "20261005-101453",
-"done": [],
+"done": [
+  {"part": "パート5", "q": 1, "date": "2026-10-10"}
+],
 "sessions": [
   {"id": "20260709-105249", "title": "Vol.1", "items": [
     {"seq": 1, "part": "パート1", "q": 2, "done": true, "date": "2026-07-09"},
@@ -215,7 +217,7 @@
     {"seq": 35, "part": "パート6", "q": 2, "done": false},
     {"seq": 36, "part": "パート4", "q": 8, "done": false},
     {"seq": 37, "part": "パート7", "q": 13, "done": false},
-    {"seq": 38, "part": "パート5", "q": 1, "done": false},
+    {"seq": 38, "part": "パート5", "q": 1, "done": true, "external": true, "date": "2026-10-10"},
     {"seq": 39, "part": "パート2", "q": 4, "done": false},
     {"seq": 40, "part": "パート1", "q": 1, "done": false},
     {"seq": 41, "part": "パート2", "q": 5, "done": false},
