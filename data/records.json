@@ -12,7 +12,8 @@
 "done": [
   {"part": "パート5", "q": 1, "date": "2026-10-19"},
   {"part": "パート5", "q": 2, "date": "2026-10-19"},
-  {"part": "パート6", "q": 2, "date": "2026-10-23"}
+  {"part": "パート6", "q": 2, "date": "2026-10-23"},
+  {"part": "パート6", "q": 3, "date": "2026-10-23"}
 ],
 "sessions": [
   {"id": "20260709-105249", "title": "Vol.1", "items": [
@@ -276,7 +277,7 @@
     {"seq": 37, "part": "パート4", "q": 8, "done": false},
     {"seq": 38, "part": "パート6", "q": 2, "done": true, "external": true, "date": "2026-10-23"},
     {"seq": 39, "part": "パート2", "q": 4, "done": false},
-    {"seq": 40, "part": "パート6", "q": 3, "done": false},
+    {"seq": 40, "part": "パート6", "q": 3, "done": true, "external": true, "date": "2026-10-23"},
     {"seq": 41, "part": "パート1", "q": 1, "done": false},
     {"seq": 42, "part": "パート3", "q": 12, "done": false},
     {"seq": 43, "part": "パート5", "q": 2, "done": true, "external": true, "date": "2026-10-19"},
